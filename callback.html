@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Shorts Autopilot - TikTok Callback</title>
+<style>
+  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.7; }
+  h1 { font-size: 1.3rem; }
+  .code-box { background: #f4f4f5; border: 1px solid #ddd; border-radius: 8px; padding: 16px; word-break: break-all; font-family: monospace; font-size: 1.05rem; margin: 16px 0; }
+  .hint { color: #666; font-size: 0.9rem; }
+  .empty { color: #999; }
+  .error { color: #c0392b; }
+</style>
+</head>
+<body>
+  <h1>TikTok 인가 콜백</h1>
+  <div id="result"></div>
+  <p class="hint">TikTok 인가(authorize) 후 이 페이지로 돌아오면 code 값이 여기 표시됩니다.
+  이 값을 복사해서 access_token 교환 단계에 사용하세요. (한 번 발급된 code는 짧은 시간 안에 만료되니
+  받는 즉시 사용하세요.)</p>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const error = params.get("error");
+  const el = document.getElementById("result");
+
+  if (code) {
+    el.innerHTML = "<p>authorization code:</p><div class=\"code-box\">" + code + "</div>";
+  } else if (error) {
+    const desc = params.get("error_description") || "";
+    el.innerHTML = "<p class=\"error\">오류: " + error + "</p><div class=\"code-box\">" + desc + "</div>";
+  } else {
+    el.innerHTML = "<p class=\"empty\">code 파라미터가 없습니다. TikTok 인가 화면을 통해 리다이렉트되어야 이 값이 표시됩니다.</p>";
+  }
+</script>
+</body>
+</html>
